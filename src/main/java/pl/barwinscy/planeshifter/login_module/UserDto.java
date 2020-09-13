@@ -1,4 +1,4 @@
-package pl.barwinscy.planeshifter.registration_module.dto;
+package pl.barwinscy.planeshifter.login_module;
 
 import lombok.Data;
 import pl.barwinscy.planeshifter.login_module.UserRole;

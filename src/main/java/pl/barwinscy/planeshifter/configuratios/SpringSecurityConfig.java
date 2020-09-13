@@ -5,24 +5,29 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import pl.barwinscy.planeshifter.login_module.services.UserService;
+import pl.barwinscy.planeshifter.login_module.UserRole;
+import pl.barwinscy.planeshifter.login_module.services.UserDetailsServiceImpl;
+
+import static pl.barwinscy.planeshifter.login_module.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
+    private UserDetailsServiceImpl userService;
     private PasswordEncoder passwordEncoder;
-    private final String[] MATCHERS = {"/"};
+    //private final String[] MATCHERS = {"/"};
     //private final String[] ADMIN_MATCHERS = {"/school/new", "/employees"};
 
 
-    public SpringSecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
+    public SpringSecurityConfig(UserDetailsServiceImpl userService, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
     }
@@ -33,8 +38,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(MATCHERS)
-                .permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/api/**").hasRole(ADMIN.name())
                 //.antMatchers(ADMIN_MATCHERS).hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()

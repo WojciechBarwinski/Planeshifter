@@ -1,11 +1,8 @@
-package pl.barwinscy.planeshifter.registration_module;
+package pl.barwinscy.planeshifter.login_module;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.barwinscy.planeshifter.login_module.UserRole;
 import pl.barwinscy.planeshifter.login_module.entities.User;
-import pl.barwinscy.planeshifter.registration_module.dto.UserDto;
 
 @Component
 public class UserMapper {
@@ -32,8 +29,6 @@ public class UserMapper {
         switch (userRole) {
             case ADMIN:
                 return UserRole.ADMIN;
-            case USER:
-                return UserRole.USER;
             case USER_PREMIUM:
                 return UserRole.USER_PREMIUM;
         }

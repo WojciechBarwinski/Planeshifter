@@ -1,9 +1,10 @@
-package pl.barwinscy.planeshifter.registration_module;
+package pl.barwinscy.planeshifter.login_module.services;
 
 import org.springframework.stereotype.Service;
 import pl.barwinscy.planeshifter.login_module.entities.User;
 import pl.barwinscy.planeshifter.login_module.repositories.UserRepository;
-import pl.barwinscy.planeshifter.registration_module.dto.UserDto;
+import pl.barwinscy.planeshifter.login_module.UserMapper;
+import pl.barwinscy.planeshifter.login_module.UserDto;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
@@ -19,7 +20,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = userMapper.mapToUser(userDto);
-         userRepository.save(user);
-         return userDto;
+        userRepository.save(user);
+        return userDto;
     }
 }

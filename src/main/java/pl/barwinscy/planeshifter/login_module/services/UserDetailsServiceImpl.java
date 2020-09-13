@@ -1,5 +1,6 @@
 package pl.barwinscy.planeshifter.login_module.services;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,11 +9,11 @@ import pl.barwinscy.planeshifter.login_module.entities.User;
 import pl.barwinscy.planeshifter.login_module.repositories.UserRepository;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -21,6 +22,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(userName).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Username %s not found", userName)));
     }
+
 
     public User getUserById (Long id){
         return userRepository.findById(id).get();
