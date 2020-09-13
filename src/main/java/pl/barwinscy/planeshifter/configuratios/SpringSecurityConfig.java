@@ -8,8 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import pl.barwinscy.planeshifter.login_module.services.UserService;
@@ -19,12 +17,12 @@ import pl.barwinscy.planeshifter.login_module.services.UserService;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserService userService;
-    private  PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     private final String[] MATCHERS = {"/"};
     //private final String[] ADMIN_MATCHERS = {"/school/new", "/employees"};
 
 
-    public SpringSecurityConfig(UserService userService, PasswordEncoder passwordEncoder){
+    public SpringSecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
     }
@@ -45,8 +43,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                .and()
+                .httpBasic();
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
