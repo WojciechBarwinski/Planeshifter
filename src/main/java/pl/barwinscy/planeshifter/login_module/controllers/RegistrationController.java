@@ -3,7 +3,7 @@ package pl.barwinscy.planeshifter.login_module.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.barwinscy.planeshifter.login_module.services.RegistrationService;
-import pl.barwinscy.planeshifter.login_module.Dtos.UserDto;
+import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
 
 
 @RestController

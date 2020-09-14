@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.barwinscy.planeshifter.login_module.entities.User;
 import pl.barwinscy.planeshifter.login_module.repositories.UserRepository;
 import pl.barwinscy.planeshifter.login_module.UserMapper;
-import pl.barwinscy.planeshifter.login_module.Dtos.UserDto;
+import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
