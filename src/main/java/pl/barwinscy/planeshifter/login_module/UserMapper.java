@@ -2,7 +2,9 @@ package pl.barwinscy.planeshifter.login_module;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import pl.barwinscy.planeshifter.login_module.Dtos.UserDto;
 import pl.barwinscy.planeshifter.login_module.entities.User;
+import pl.barwinscy.planeshifter.login_module.enums.UserRole;
 
 @Component
 public class UserMapper {

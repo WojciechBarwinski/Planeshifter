@@ -1,6 +1,6 @@
 package pl.barwinscy.planeshifter.login_module.services;
 
-import pl.barwinscy.planeshifter.login_module.UserDto;
+import pl.barwinscy.planeshifter.login_module.Dtos.UserDto;
 
 public interface RegistrationService {
 

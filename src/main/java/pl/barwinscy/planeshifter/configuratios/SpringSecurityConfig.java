@@ -1,6 +1,5 @@
 package pl.barwinscy.planeshifter.configuratios;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -11,10 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import pl.barwinscy.planeshifter.login_module.UserRole;
 import pl.barwinscy.planeshifter.login_module.services.UserDetailsServiceImpl;
 
-import static pl.barwinscy.planeshifter.login_module.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -23,9 +20,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsServiceImpl userService;
     private PasswordEncoder passwordEncoder;
-    //private final String[] MATCHERS = {"/"};
-    //private final String[] ADMIN_MATCHERS = {"/school/new", "/employees"};
-
 
     public SpringSecurityConfig(UserDetailsServiceImpl userService, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -39,8 +33,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/api/**").hasRole(ADMIN.name())
-                //.antMatchers(ADMIN_MATCHERS).hasRole("ADMIN")
+                .antMatchers("/admin/**").hasAuthority("administrator")
+                .antMatchers("/h2-console/**").hasAuthority("h2 access")
                 .anyRequest()
                 .authenticated()
                 .and()

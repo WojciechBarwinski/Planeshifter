@@ -1,4 +1,4 @@
-package pl.barwinscy.planeshifter.login_module;
+package pl.barwinscy.planeshifter.login_module.enums;
 
 public enum  UserPermission {
     PLAYER("normal game"),

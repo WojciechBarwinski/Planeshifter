@@ -1,10 +1,9 @@
 package pl.barwinscy.planeshifter.login_module.entities;
 
-import lombok.Data;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.barwinscy.planeshifter.login_module.UserRole;
+import pl.barwinscy.planeshifter.login_module.enums.UserRole;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -22,7 +21,7 @@ public class User implements UserDetails {
     @Setter
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    //private Set<? extends GrantedAuthority> grantedAuthorities;
+
     @Setter
     private boolean isAccountNonExpired;
     @Setter

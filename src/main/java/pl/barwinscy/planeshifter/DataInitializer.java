@@ -10,7 +10,7 @@ import pl.barwinscy.planeshifter.login_module.repositories.UserRepository;
 import java.util.Arrays;
 import java.util.List;
 
-import static pl.barwinscy.planeshifter.login_module.UserRole.*;
+import static pl.barwinscy.planeshifter.login_module.enums.UserRole.*;
 
 @Component
 public class DataInitializer implements ApplicationListener<ContextRefreshedEvent> {

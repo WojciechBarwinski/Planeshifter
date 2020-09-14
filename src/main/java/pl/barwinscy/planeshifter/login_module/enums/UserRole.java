@@ -1,13 +1,12 @@
-package pl.barwinscy.planeshifter.login_module;
+package pl.barwinscy.planeshifter.login_module.enums;
 
 import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static pl.barwinscy.planeshifter.login_module.UserPermission.*;
+import static pl.barwinscy.planeshifter.login_module.enums.UserPermission.*;
 
 public enum UserRole {
 
