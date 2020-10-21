@@ -3,8 +3,11 @@ package pl.barwinscy.planeshifter.login_module.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
 import pl.barwinscy.planeshifter.login_module.entities.User;
 import pl.barwinscy.planeshifter.login_module.services.UserDetailsServiceImpl;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -16,9 +19,14 @@ public class AdminController {
         this.userService = userService;
     }
 
+    @GetMapping
+    public List<UserDto> getAllUsers(){
+        return userService.getAllUsers();
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUserById(@PathVariable Long id){
+    public UserDto getUserById(@PathVariable Long id){
         return userService.getUserById(id);
     }
 }

@@ -8,6 +8,6 @@ public class UserDto {
 
     private String username;
     private String password;
-    private String passwordConfirmation;//TODO
+    //private String passwordConfirmation;//TODO
     private UserRole role;
 }
