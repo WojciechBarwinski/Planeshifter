@@ -1,16 +1,27 @@
 package pl.barwinscy.planeshifter.login_module.exceptions;
 
-import java.util.Map;
+import org.springframework.validation.Errors;
+import pl.barwinscy.planeshifter.login_module.CustomError;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PasswordNotMatchedException extends RuntimeException {
 
-    private Map<String, String> errorsMap;
 
-    public PasswordNotMatchedException(Map<String, String> errorsMap) {
-        this.errorsMap = errorsMap;
+    private List<CustomError> errorList;
+
+    public PasswordNotMatchedException(Errors errors) {
+        createErrorList(errors);
     }
 
-    public Map<String, String> getErrorsMap() {
-        return errorsMap;
+    public List<CustomError> getErrorList() {
+        return errorList;
+    }
+
+    private void createErrorList(Errors errors){
+        errorList = new ArrayList<>();
+        errors.getAllErrors()
+                .forEach(x -> errorList.add(new CustomError(x.getObjectName(), x.getCode(), x.getDefaultMessage())));
     }
 }

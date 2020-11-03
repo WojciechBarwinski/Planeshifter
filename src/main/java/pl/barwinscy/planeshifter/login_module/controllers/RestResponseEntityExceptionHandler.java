@@ -11,6 +11,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import pl.barwinscy.planeshifter.login_module.exceptions.PasswordNotMatchedException;
 import pl.barwinscy.planeshifter.login_module.exceptions.ResourceNotFoundException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -21,6 +24,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(PasswordNotMatchedException.class)
     public ResponseEntity<Object> handlePasswordNotMatchedException(PasswordNotMatchedException exception, WebRequest webRequest) {
-        return new ResponseEntity<Object>(exception.getErrorsMap() , new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<Object>(exception.getErrorList() , new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
     }
 }
