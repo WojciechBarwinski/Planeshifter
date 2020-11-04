@@ -1,10 +1,11 @@
 package pl.barwinscy.planeshifter.login_module.controllers;
 
-
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
-import pl.barwinscy.planeshifter.login_module.entities.User;
+import pl.barwinscy.planeshifter.login_module.exceptions.PasswordNotMatchedException;
 import pl.barwinscy.planeshifter.login_module.services.UserDetailsServiceImpl;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public List<UserDto> getAllUsers(){
         return userService.getAllUsers();
     }
@@ -28,5 +29,26 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     public UserDto getUserById(@PathVariable Long id){
         return userService.getUserById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto registerNewUser(@RequestBody UserDto userDto){
+        return userService.createUser(userDto);
+    }
+
+    @PutMapping("/{userId}")
+    public UserDto updateUser(@PathVariable String userId, @Validated @RequestBody UserDto userDto, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            throw new PasswordNotMatchedException(bindingResult);
+        }
+        return userService.updateUser(userDto);
+    }
+
+    @DeleteMapping("/{userId}")
+    public String deleteUser(@PathVariable String userId){
+        userService.deleteUser(userId);
+
+        return "Konto usunięte, dziękujemy";
     }
 }

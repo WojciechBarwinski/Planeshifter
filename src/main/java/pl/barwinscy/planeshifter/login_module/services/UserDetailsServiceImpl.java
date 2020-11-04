@@ -36,7 +36,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 new UsernameNotFoundException(String.format("Username %s not found", userName)));
     }
 
-
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         return userMapper.mapUserToUserDto(user);
@@ -61,8 +60,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userMapper.mapUserToUserDto(user);
     }
 
-    public UserDto newUser(NewUserDto newUserDto){
-
+    public UserDto createUser(UserDto userDto) {
+        //TODO
         return null;
+    }
+
+    public UserDto updateUser(UserDto userDto) {
+        //TODO
+        return null;
+    }
+
+    public void deleteUser(String userId) {
+        //TODO
     }
 }

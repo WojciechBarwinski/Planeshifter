@@ -28,8 +28,7 @@ public class NewUserController {
     }
 
     @PostMapping
-    public UserDto newUser(@Validated @RequestBody NewUserDto newUserDto, BindingResult bindingResult){
-
-        return null;
+    public UserDto newUser(@Validated @RequestBody UserDto UserDto, BindingResult bindingResult){
+        return userService.createUser(UserDto);
     }
 }

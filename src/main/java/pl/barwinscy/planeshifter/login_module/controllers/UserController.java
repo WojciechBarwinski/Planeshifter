@@ -1,5 +1,6 @@
 package pl.barwinscy.planeshifter.login_module.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -43,4 +44,16 @@ public class UserController {
         return userService.changePassword(userName, password);
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto registerNewUser(@RequestBody UserDto userDto){
+        return userService.createUser(userDto);
+    }
+
+    @DeleteMapping("/{userId}")
+    public String deleteUser(@PathVariable String userId){
+        userService.deleteUser(userId);
+
+        return "Konto usunięte, dziękujemy";
+    }
 }
