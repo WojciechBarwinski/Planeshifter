@@ -38,10 +38,10 @@ public class UserValidator implements Validator {
             if (!password.getPasswordOne().matches("^.{5,}$")) {
                 errors.rejectValue("password.passwordOne", "password.validation.toShort", "Password must have minimum 5 characters");
             }
-            if (!password.getPasswordOne().matches("\\d+")) {
+            if (password.getPasswordOne().matches("[a-zA-Z]+")) {
                 errors.rejectValue("password.passwordOne", "password.validation.missDigit", "Password must contain minimum 1 digit");
             }
-            if (!password.getPasswordOne().matches("[a-zA-Z]+")) {
+            if (password.getPasswordOne().matches("\\d+")) {
                 errors.rejectValue("password.passwordOne", "password.validation.missCharacter", "Password must contain minimum 1 character");
             }
         }

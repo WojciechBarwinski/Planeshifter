@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import pl.barwinscy.planeshifter.login_module.exceptions.UserNotMatchedException;
 import pl.barwinscy.planeshifter.login_module.exceptions.ResourceNotFoundException;
+import pl.barwinscy.planeshifter.login_module.exceptions.UsernameIsTakenException;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -19,7 +20,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(UserNotMatchedException.class)
-    public ResponseEntity<Object> handlePasswordNotMatchedException(UserNotMatchedException exception, WebRequest webRequest) {
+    public ResponseEntity<Object> handleUserNotMatchedException(UserNotMatchedException exception, WebRequest webRequest) {
         return new ResponseEntity<Object>(exception.getErrorList() , new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(UsernameIsTakenException.class)
+    public ResponseEntity<Object> handleUsernameIsTakenException(UsernameIsTakenException exception, WebRequest webRequest){
+        return new ResponseEntity<Object>(exception.getError(), new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.barwinscy.planeshifter.login_module.CustomError;
 import pl.barwinscy.planeshifter.login_module.UserMapper;
 import pl.barwinscy.planeshifter.login_module.UserMapperV2;
 import pl.barwinscy.planeshifter.login_module.dtos.NewUserDto;
@@ -12,6 +13,7 @@ import pl.barwinscy.planeshifter.login_module.dtos.PasswordDto;
 import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
 import pl.barwinscy.planeshifter.login_module.entities.User;
 import pl.barwinscy.planeshifter.login_module.exceptions.ResourceNotFoundException;
+import pl.barwinscy.planeshifter.login_module.exceptions.UsernameIsTakenException;
 import pl.barwinscy.planeshifter.login_module.repositories.UserRepository;
 
 import java.util.List;
@@ -62,6 +64,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public UserDto createUser(UserDto userDto) {
+        if (userRepository.findByUsername(userDto.getUsername()).orElse(null) != null){
+
+            throw new UsernameIsTakenException(new CustomError("UserDto", "user.validation.usernameIsTaken", "This username is already taken"));
+        }
         User save = userRepository.save(userMapper.mapToUser(userDto));
         return userMapper.mapToUserDto(save);
     }
