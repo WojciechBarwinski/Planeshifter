@@ -5,7 +5,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
-import pl.barwinscy.planeshifter.login_module.exceptions.PasswordNotMatchedException;
+import pl.barwinscy.planeshifter.login_module.exceptions.UserNotMatchedException;
 import pl.barwinscy.planeshifter.login_module.services.UserDetailsServiceImpl;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class AdminController {
     @PutMapping("/{userId}")
     public UserDto updateUser(@PathVariable String userId, @Validated @RequestBody UserDto userDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            throw new PasswordNotMatchedException(bindingResult);
+            throw new UserNotMatchedException(bindingResult);
         }
         return userService.updateUser(userDto);
     }

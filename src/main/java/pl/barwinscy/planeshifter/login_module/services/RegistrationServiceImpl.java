@@ -11,17 +11,17 @@ import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
 public class RegistrationServiceImpl implements RegistrationService {
 
     private UserRepository userRepository;
-    //private UserMapper userMapper;
-    private UserMapperV2 userMapper;
 
-    public RegistrationServiceImpl(UserRepository userRepository, UserMapperV2 userMapperV2) {
+    private UserMapper userMapper;
+
+    public RegistrationServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.userMapper = userMapperV2;
+        this.userMapper = userMapper;
     }
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        User user = userMapper.mapUserDtoToUser(userDto);
+        User user = userMapper.mapToUser(userDto);
         userRepository.save(user);
         return userDto;
     }

@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.barwinscy.planeshifter.login_module.UserMapper;
 import pl.barwinscy.planeshifter.login_module.UserMapperV2;
 import pl.barwinscy.planeshifter.login_module.dtos.NewUserDto;
 import pl.barwinscy.planeshifter.login_module.dtos.PasswordDto;
@@ -20,11 +21,11 @@ import java.util.stream.Collectors;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserRepository userRepository;
-    private UserMapperV2 userMapper;
+    private UserMapper userMapper;
     private PasswordEncoder passwordEncoder;
 
 
-    public UserDetailsServiceImpl(UserRepository userRepository, UserMapperV2 userMapper, PasswordEncoder passwordEncoder) {
+    public UserDetailsServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
@@ -38,18 +39,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
-        return userMapper.mapUserToUserDto(user);
+        return userMapper.mapToUserDto(user);
     }
 
     public UserDto getUserByName(String userName) {
         User user = userRepository.findByUsername(userName).orElseThrow(ResourceNotFoundException::new);
-        return userMapper.mapUserToUserDto(user);
+        return userMapper.mapToUserDto(user);
     }
 
     public List<UserDto> getAllUsers() {
         List<User> all = userRepository.findAll();
         return all.stream()
-                .map(x -> userMapper.mapUserToUserDto(x))
+                .map(x -> userMapper.mapToUserDto(x))
                 .collect(Collectors.toList());
     }
 
@@ -57,12 +58,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findByUsername(userName).orElseThrow(ResourceNotFoundException::new);
         user.setPassword(passwordEncoder.encode(password.getPasswordOne()));
         userRepository.save(user);
-        return userMapper.mapUserToUserDto(user);
+        return userMapper.mapToUserDto(user);
     }
 
     public UserDto createUser(UserDto userDto) {
-        //TODO
-        return null;
+        User save = userRepository.save(userMapper.mapToUser(userDto));
+        return userMapper.mapToUserDto(save);
     }
 
     public UserDto updateUser(UserDto userDto) {

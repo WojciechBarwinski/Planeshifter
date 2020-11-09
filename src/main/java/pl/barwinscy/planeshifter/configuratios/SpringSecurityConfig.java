@@ -35,6 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/newUser").permitAll()
                 .antMatchers("/admin/**").hasAuthority("administrator")
                 .antMatchers("/h2-console/**").hasAuthority("h2 access")
                 .anyRequest()

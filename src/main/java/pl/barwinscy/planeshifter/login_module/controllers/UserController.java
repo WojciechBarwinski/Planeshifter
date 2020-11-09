@@ -7,7 +7,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import pl.barwinscy.planeshifter.login_module.dtos.PasswordDto;
 import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
-import pl.barwinscy.planeshifter.login_module.exceptions.PasswordNotMatchedException;
+import pl.barwinscy.planeshifter.login_module.exceptions.UserNotMatchedException;
 import pl.barwinscy.planeshifter.login_module.services.UserDetailsServiceImpl;
 import pl.barwinscy.planeshifter.login_module.validators.PasswordValidator;
 
@@ -39,7 +39,7 @@ public class UserController {
     @PutMapping("/{userName}")
     public UserDto updateUser(@PathVariable String userName, @Validated @RequestBody PasswordDto password, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            throw new PasswordNotMatchedException(bindingResult);
+            throw new UserNotMatchedException(bindingResult);
         }
         return userService.changePassword(userName, password);
     }

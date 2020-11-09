@@ -6,12 +6,12 @@ import pl.barwinscy.planeshifter.login_module.CustomError;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PasswordNotMatchedException extends RuntimeException {
+public class UserNotMatchedException extends RuntimeException {
 
 
     private List<CustomError> errorList;
 
-    public PasswordNotMatchedException(Errors errors) {
+    public UserNotMatchedException(Errors errors) {
         createErrorList(errors);
     }
 

@@ -15,22 +15,8 @@ public class PasswordValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         PasswordDto password = (PasswordDto) o;
-        validatePassword(errors, password);
+        //validatePassword(errors, password);
     }
 
-    private void validatePassword(Errors errors, PasswordDto password) {
-        if (!password.getPasswordOne().equals(password.getPasswordTwo())) {
-            errors.rejectValue("passwordOne", "password.validation.differentPass", "Passwords are different");
-        } else {
-            if (!password.getPasswordOne().matches("^.{5,}$")) {
-                errors.rejectValue("passwordOne", "password.validation.toShort", "Password must have minimum 5 characters");
-            }
-            if (!password.getPasswordOne().matches("\\d+")) {
-                errors.rejectValue("passwordOne", "password.validation.missDigit", "Password must contain minimum 1 digit");
-            }
-            if (!password.getPasswordOne().matches("[a-zA-Z]+")) {
-                errors.rejectValue("passwordOne", "password.validation.missCharacter", "Password must contain minimum 1 character");
-            }
-        }
-    }
+
 }
