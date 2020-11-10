@@ -7,8 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.barwinscy.planeshifter.login_module.CustomError;
 import pl.barwinscy.planeshifter.login_module.UserMapper;
-import pl.barwinscy.planeshifter.login_module.UserMapperV2;
-import pl.barwinscy.planeshifter.login_module.dtos.NewUserDto;
 import pl.barwinscy.planeshifter.login_module.dtos.PasswordDto;
 import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
 import pl.barwinscy.planeshifter.login_module.entities.User;
@@ -22,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private UserRepository userRepository;
-    private UserMapper userMapper;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
     public UserDetailsServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
@@ -64,20 +62,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public UserDto createUser(UserDto userDto) {
-        if (userRepository.findByUsername(userDto.getUsername()).orElse(null) != null){
-
+        if (userRepository.findByUsername(userDto.getUsername()).orElse(null) != null) {
             throw new UsernameIsTakenException(new CustomError("UserDto", "user.validation.usernameIsTaken", "This username is already taken"));
         }
-        User save = userRepository.save(userMapper.mapToUser(userDto));
-        return userMapper.mapToUserDto(save);
+        User user = userRepository.save(userMapper.mapToUser(userDto));
+        return userMapper.mapToUserDto(user);
     }
 
     public UserDto updateUser(UserDto userDto) {
-        //TODO
-        return null;
+        User user = userRepository.findByUsername(userDto.getUsername()).get();
+        user.setPassword(passwordEncoder.encode(userDto.getPassword().getPasswordOne()));
+        user.setRole(userDto.getRole());
+        userRepository.save(user);
+        return userMapper.mapToUserDto(user);
     }
 
-    public void deleteUser(String userId) {
-        //TODO
+    public void deleteUser(String username) {
+        userRepository.deleteById(userRepository.findByUsername(username).get().getId());
+    }
+
+    public void deleteUserByAdmin(String userId) {
+        userRepository.deleteById(Long.valueOf(userId));
     }
 }

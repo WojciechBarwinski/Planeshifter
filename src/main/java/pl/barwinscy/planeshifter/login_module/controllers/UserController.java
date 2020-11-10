@@ -1,15 +1,15 @@
 package pl.barwinscy.planeshifter.login_module.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import pl.barwinscy.planeshifter.login_module.dtos.PasswordDto;
+import pl.barwinscy.planeshifter.login_module.CustomError;
 import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
 import pl.barwinscy.planeshifter.login_module.exceptions.UserNotMatchedException;
+import pl.barwinscy.planeshifter.login_module.exceptions.UsernameIsTakenException;
 import pl.barwinscy.planeshifter.login_module.services.UserDetailsServiceImpl;
-import pl.barwinscy.planeshifter.login_module.validators.PasswordValidator;
+import pl.barwinscy.planeshifter.login_module.validators.UserValidator;
 
 import java.security.Principal;
 
@@ -17,13 +17,13 @@ import java.security.Principal;
 @RequestMapping("/api/v1/homepage")
 public class UserController {
 
-    private UserDetailsServiceImpl userService;
-    private PasswordValidator validator;
+    private final UserDetailsServiceImpl userService;
+    private final UserValidator validator;
 
 
-    public UserController(UserDetailsServiceImpl userService, PasswordValidator validator) {
+    public UserController(UserDetailsServiceImpl userService, UserValidator userValidator) {
         this.userService = userService;
-        this.validator = validator;
+        this.validator = userValidator;
     }
 
     @InitBinder
@@ -36,24 +36,20 @@ public class UserController {
         return userService.getUserByName(principal.getName());
     }
 
-    @PutMapping("/{userName}")
-    public UserDto updateUser(@PathVariable String userName, @Validated @RequestBody PasswordDto password, BindingResult bindingResult){
+    @PutMapping()
+    public UserDto updateUser(Principal principal, @Validated @RequestBody UserDto userDto, BindingResult bindingResult){
+        if (!principal.getName().equals(userDto.getUsername())){
+            throw new UsernameIsTakenException(new CustomError("UserDto", "user.validation.incorrectUsername", "You can only change Your account data"));
+        }
         if (bindingResult.hasErrors()){
             throw new UserNotMatchedException(bindingResult);
         }
-        return userService.changePassword(userName, password);
+        return userService.updateUser(userDto);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto registerNewUser(@RequestBody UserDto userDto){
-        return userService.createUser(userDto);
-    }
-
-    @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable String userId){
-        userService.deleteUser(userId);
-
+    @DeleteMapping()
+    public String deleteUser(Principal principal){
+        userService.deleteUser(principal.getName());
         return "Konto usunięte, dziękujemy";
     }
 }

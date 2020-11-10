@@ -14,16 +14,16 @@ import pl.barwinscy.planeshifter.login_module.validators.UserValidator;
 @RequestMapping("/newUser")
 public class NewUserController {
 
-    private UserDetailsServiceImpl userService;
-    private UserValidator userValidator;
+    private final UserDetailsServiceImpl userService;
+    private final UserValidator validator;
 
     public NewUserController(UserDetailsServiceImpl userService, UserValidator userValidator) {
         this.userService = userService;
-        this.userValidator = userValidator;
+        this.validator = userValidator;
     }
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.setValidator(userValidator);
+        binder.setValidator(validator);
     }
 
     @PostMapping()
