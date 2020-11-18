@@ -50,7 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public List<UserDto> getAllUsers() {
         List<User> all = userRepository.findAll();
         return all.stream()
-                .map(x -> userMapper.mapToUserDto(x))
+                .map(userMapper::mapToUserDto)
                 .collect(Collectors.toList());
     }
 
