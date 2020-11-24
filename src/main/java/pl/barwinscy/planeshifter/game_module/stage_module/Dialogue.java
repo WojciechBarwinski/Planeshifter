@@ -7,4 +7,8 @@ public class Dialogue {
 
     private String dialogueValue;
     private Scene nextScene;
+
+    public Dialogue(String dialogueValue) {
+        this.dialogueValue = dialogueValue;
+    }
 }

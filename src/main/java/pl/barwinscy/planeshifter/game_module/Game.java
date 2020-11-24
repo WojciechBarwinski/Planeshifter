@@ -2,8 +2,13 @@ package pl.barwinscy.planeshifter.game_module;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import pl.barwinscy.planeshifter.game_module.stage_module.Dialogue;
+import pl.barwinscy.planeshifter.game_module.stage_module.InnStage;
+import pl.barwinscy.planeshifter.game_module.stage_module.Scene;
 import pl.barwinscy.planeshifter.game_module.stage_module.Stage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -11,9 +16,58 @@ import java.util.List;
 public class Game {
 
     private String testValue = "Tekst z game.class";
+    private Stage actualStage;
 
     private List<Stage> stages;
 
-    
+    public Game() {
+        stages = new ArrayList<>();
+        Scene scene1 = new Scene("Wchodzisz do zadbanej gospody, w środku jest ciepło, pachnie dobrym jedzeniem a w końcie sali przygrywa bard. Za ladą stoi rosły karczmarz.",0);
+        Dialogue dialogue1 = new Dialogue("(HUNGRY = TRUE)Potrzebuje ciepłego posiłku");
+        Dialogue dialogue2 = new Dialogue("(HAVE_ROOM = FALSE)Czy są wolne pokojne? Muszę gdzies przenocować");
+        Dialogue dialogue3 = new Dialogue("(KNOW_ABOUT_MONSTER = FALSE)Czy w miasteczku była by jakaś praca?");
+        scene1.setDialogueList(Arrays.asList(dialogue1, dialogue2, dialogue3));
 
+        Scene scene2 = new Scene("Obecnie mamy wolny malutki pokój za 15sz oraz apartament dla bogatych przejezdnych kupców za 30sz. Jeśli to Ci nie pasuje zawsze możesz wyspać się tutaj przy kominku.",1);
+        dialogue2.setNextScene(scene2);
+        Dialogue dialogue4 = new Dialogue("Poproszę w takim razie ten mały pokój za 15sz(PAID:15)(#HAVE_ROOM = True)");
+        Dialogue dialogue5 = new Dialogue("Wezmę apartament");
+        Dialogue dialogue6 = new Dialogue("Prześpie się więc tutaj przy kominku(#HAVE_ROOM = True)");
+        scene2.setDialogueList(Arrays.asList(dialogue4, dialogue5, dialogue6));
+        scene2.setPreviousSceneId(0);
+
+        Scene scene3 = new Scene("To już nie byle wydatek, aby na pewno masz tyle pieniędzy?",2);
+        dialogue5.setNextScene(scene3);
+        Dialogue dialogue7 = new Dialogue("(GOLD>30)Tak, proszę(#HAVE_ROOM = True)");
+        Dialogue dialogue8 = new Dialogue("(GOLD < 30)Nie, wybacz, źle przeliczyłem(BACK)(#HAVE_ROOM = FALSE)");
+        Dialogue dialogue9 = new Dialogue("Jednak się rozmyśliłem(BACK)");
+        scene3.setDialogueList(Arrays.asList(dialogue7, dialogue8, dialogue9));
+        scene3.setPreviousSceneId(1);
+
+
+        Stage innStage = new InnStage(scene1);
+        innStage.setSceneList(Arrays.asList(scene1, scene2, scene3));
+        stages.add(innStage);
+        actualStage = innStage;
+    }
+
+    public void checkDialogueActionByGame(String dialogue){
+        if (dialogue.contains("#")){
+            actualStage.checkDialogueActionByStage(dialogue);
+        }
+        //TODO czytanie danych z dialogów globalnych
+    }
+
+    public Scene getActualSceneByStage(){
+        Scene actualScene = actualStage.getActualScene();
+        List<Dialogue> dialogueList = actualScene.getDialogueList();
+        Scene scene = new Scene(actualScene.getDescription(), actualScene.getSceneId());
+
+        for (int i = 0; i < dialogueList.size(); i++){
+            Dialogue tmpDialogue = dialogueList.get(i);
+            
+        }
+
+        return scene;
+    }
 }

@@ -1,26 +1,36 @@
 package pl.barwinscy.planeshifter.game_module.controllers;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import pl.barwinscy.planeshifter.game_module.Game;
-import pl.barwinscy.planeshifter.login_module.dtos.UserDto;
+import org.springframework.web.bind.annotation.*;
+import pl.barwinscy.planeshifter.game_module.GameServices;
+import pl.barwinscy.planeshifter.game_module.SceneDTO;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/game")
+@RequestMapping("/api/v1/newGame")
 public class GameController {
 
-    private Game game;
+    final private GameServices GAME_SERVICES;
 
-    public GameController(Game game) {
-        this.game = game;
+    public GameController(GameServices gameServices) {
+        this.GAME_SERVICES = gameServices;
     }
 
-    @GetMapping("/test")
-    public String test(){
-        return game.getTestValue();
+
+    @GetMapping("/game")
+    public SceneDTO getStages(){
+        return GAME_SERVICES.getActualScene();
+    }
+
+/*    @PostMapping("/test3/{dialogueId}")
+    public SceneDTO getActualScene(@PathVariable String dialogueId){
+        gameServices.setActualScene(Integer.valueOf(dialogueId));
+        return gameServices.getActualScene();
+    }*/
+
+    @PostMapping("/game")
+    public SceneDTO getActualScene2(@RequestBody Integer dialogueId){
+        GAME_SERVICES.setActualScene(dialogueId);
+        return GAME_SERVICES.getActualScene();
     }
 }
