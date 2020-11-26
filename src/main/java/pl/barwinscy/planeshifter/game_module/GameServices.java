@@ -17,6 +17,7 @@ public class GameServices {
     }
 
     public SceneDTO getActualScene(){
+        GAME.prepareActualSceneByGame();
         Scene actualScene = GAME.getActualStage().getActualScene();
         return sceneToSceneDTO(actualScene);
     }
@@ -26,13 +27,13 @@ public class GameServices {
         Scene actualScene = actualStage.getActualScene();
 
         String chosenDialogue = actualScene.getDialogueList().get(dialogueId).getDialogueValue(); //wybrany dialog
-        if (chosenDialogue.contains("$") || chosenDialogue.contains("#")){
+        if (chosenDialogue.contains("($") || chosenDialogue.contains("(#")){
             GAME.checkDialogueActionByGame(chosenDialogue);
         }
         if (!chosenDialogue.contains("(BACK)")){
             Scene nextScene = actualScene.getDialogueList().get(dialogueId).getNextScene();
             if (nextScene == null){
-                Scene mainScene = actualStage.getMainScene();
+                Scene mainScene = actualStage.getMAIN_SCENE();
                 actualStage.setActualScene(mainScene);
             } else {
                 actualStage.setActualScene(nextScene);
@@ -48,7 +49,7 @@ public class GameServices {
         if (actualScene.getDescription() != null){
             sceneDTO.setDescription(actualScene.getDescription());
         }
-        List<Dialogue> dialogueList = actualScene.getDialogueList();
+        List<Dialogue> dialogueList = actualScene.getActualDialogueList();
         for (Dialogue dialogue : dialogueList) {
             sceneDTO.setDialogues(dialogue.getDialogueValue());
         }

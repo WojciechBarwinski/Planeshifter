@@ -10,8 +10,10 @@ public abstract class Stage {
     Scene actualScene;
     List<Scene> sceneList = new ArrayList<>();
 
+    abstract public boolean checkDialogueConditionByStage(Dialogue dialogue);
+    abstract public void checkDialogueActionByStage(String dialogue);
 
-    public Scene getMainScene() {
+    public Scene getMAIN_SCENE() {
         return mainScene;
     }
 
@@ -35,5 +37,5 @@ public abstract class Stage {
         this.sceneList = sceneList;
     }
 
-    abstract public void checkDialogueActionByStage(String dialogue);
+
 }
