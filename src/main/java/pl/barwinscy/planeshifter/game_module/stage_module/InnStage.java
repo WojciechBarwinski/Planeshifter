@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 public class InnStage extends Stage {
 
+
     private final Scene MAIN_SCENE;
     private Scene actualScene;
     private boolean isFeed;
@@ -38,6 +39,7 @@ public class InnStage extends Stage {
         }
     }
 
+    @Override
     public boolean checkDialogueConditionByStage(Dialogue dialogue) {
         String dialogueValue = dialogue.getDialogueValue();
         if (dialogueValue.contains("HAVE_ROOM") && dialogueValue.contains("KNOW_ABOUT_JOB")) {
@@ -49,6 +51,6 @@ public class InnStage extends Stage {
         } else if (dialogueValue.contains("KNOW_ABOUT_JOB")) {
             return !knowAboutJob;
         }
-        return false;
+        return false; //TODO coś z tym zrobić
     }
 }
